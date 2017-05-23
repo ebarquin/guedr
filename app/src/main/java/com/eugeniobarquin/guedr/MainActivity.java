@@ -5,8 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
     protected static String TAG = MainActivity.class.getCanonicalName();
 
     protected Button changeToStone;
@@ -17,11 +18,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Vamos a obtener una referencia al ImageView del offline image
+        final ImageView offlineImage = (ImageView) findViewById(R.id.offline_weather_image);
+
         changeToStone = (Button) findViewById(R.id.change_stone_system);
-        changeToStone.setOnClickListener(this);
+
+        //Esto es muy raro que lo hagamos, pero te puede ayudar a entender
+        // que son las clases anónimas
+
+        changeToStone.setOnClickListener(new StoneButtonListner(offlineImage));
 
         changeToDonkey = (Button) findViewById(R.id.change_donkey_system);
-        changeToDonkey.setOnClickListener(this);
+
+        //Esto es lo que más problablemente termines haciendo en tu código
+        changeToDonkey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("Lo que sea", "Me han pedido burro");
+                offlineImage.setImageResource(R.drawable.offline_weather2);
+            }
+        });
+
+
+
 
         Log.v(TAG, "Hola Amundio, he pasado por onCreate");
     }
@@ -34,28 +53,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         outState.putString("clave", "valor");
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.change_stone_system:
-                Log.v(TAG, "Me han pedido piedra");
-                break;
-            case R.id.change_donkey_system:
-                Log.v(TAG, "Me han pedido burro");
-                break;
-            default:
-                Log.v(TAG, "No me han pedido ni burro ni piedra");
-                break;
-        }
+}
 
-//        if (v.getId() == R.id.change_stone_system) {
-//            Log.v(TAG, "Me han pedido piedra");
-//        } else if (v.getId() == R.id.change_donkey_system) {
-//            Log.v(TAG, "Me han pedido burro");
-//        } else  {
-//            Log.v(TAG, "No se qué me han pedido");
-//
-//        }
-//
-   }
+class StoneButtonListner implements View.OnClickListener {
+    private final ImageView offlineImage;
+
+    private StoneButtonListner(ImageView offlineImage) {
+        this.offlineImage = offlineImage;
+    }
+
+    public void onClick(View v) {
+        Log.v("Lo que sea", "Me han pedido piedra");
+        offlineImage.setImageResource(R.drawable.offline_weather);
+    }
 }
