@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 class StoneButtonListner implements View.OnClickListener {
     private final ImageView offlineImage;
 
-    private StoneButtonListner(ImageView offlineImage) {
+    public StoneButtonListner(ImageView offlineImage) {
         this.offlineImage = offlineImage;
     }
 
